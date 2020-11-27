@@ -1,0 +1,78 @@
+<!--
+ * @Author: minghui.ding
+ * @Date: 2020-11-27 14:02:10
+ * @LastEditors: minghui.ding
+ * @LastEditTime: 2020-11-27 17:12:48
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>excel</title>
+    <style>
+      #myfile {
+        display: none;
+      }
+      .lab {
+        width: 100px;
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        cursor: pointer;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 5px;
+        background-color: #efefef;
+        display: block;
+      }
+      #btn {
+        width: 100px;
+        height: 30px;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <label for="myfile" class="lab">
+      点击上传文件
+      <input type="file" name="" id="myfile" />
+    </label>
+    <button id="btn">点击导出文件</button>
+    <div id="demo"></div>
+    <script src="../node_modules/xlsx/dist/xlsx.core.min.js"></script>
+    <script>
+      var myfile = document.getElementById('myfile')
+      var btn = document.getElementById('btn')
+      var reader = new FileReader()
+      var data
+      myfile.addEventListener('change', upload)
+      btn.addEventListener('click', () => {
+        if (myfile.files.length === 0) {
+          alert('请先上传文件')
+          return
+        }
+        download(data, myfile.files[0].name)
+      })
+      function upload() {
+        console.log(reader,myfile.files[0].name)
+        reader.onload = function (e) {
+          data = e.target.result
+          var workbook = XLSX.read(data, { type: 'binary' })
+          console.log(console.log(XLSX.utils))
+          document.getElementById("demo").innerHTML = XLSX.utils.sheet_to_html(workbook.Sheets[workbook.SheetNames[0]])
+        }
+        reader.readAsBinaryString(myfile.files[0])
+      }
+      function download(content, filename) {
+        var a = document.createElement('a')
+        var blob = new Blob([content])
+        a.download = filename
+        a.href = URL.createObjectURL(blob)
+        a.click()
+        
+      }
+    </script>
+  </body>
+</html>
