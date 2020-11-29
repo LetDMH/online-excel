@@ -2,7 +2,7 @@
  * @Author: minghui.ding
  * @Date: 2020-11-27 14:02:10
  * @LastEditors: minghui.ding
- * @LastEditTime: 2020-11-27 17:12:48
+ * @LastEditTime: 2020-11-28 20:56:21
  * @Description: 
 -->
 <!DOCTYPE html>
@@ -16,63 +16,71 @@
         display: none;
       }
       .lab {
+        display: inline-block;
         width: 100px;
-        height: 25px;
-        line-height: 25px;
+        height: 100px;
         text-align: center;
         cursor: pointer;
-        border: 1px solid black;
-        border-radius: 5px;
-        padding: 5px;
+        border: 2px dashed;
         background-color: #efefef;
-        display: block;
+        font-size: 13.5px;
+        display: flex;
+        align-items: center;
       }
       #btn {
         width: 100px;
         height: 30px;
         margin-top: 10px;
+        white-space: nowrap;
+      }
+      #table {
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        height: 1000px;
+        left: 0px;
+        top: 0px;
       }
     </style>
+    <link
+      href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/luckysheet/dist/plugins/css/pluginsCss.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/luckysheet/dist/plugins/plugins.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/luckysheet/dist/css/luckysheet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/luckysheet/dist/assets/iconfont/iconfont.css"
+    />
+    <script
+      lang="javascript"
+      src="https://cdn.bootcdn.net/ajax/libs/xlsx/0.16.8/xlsx.core.min.js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luckysheet/dist/plugins/js/plugin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luckysheet/dist/luckysheet.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luckyexcel/dist/luckyexcel.umd.js"></script>
   </head>
   <body>
     <label for="myfile" class="lab">
-      点击上传文件
+      <span>点击或拖入上传excel</span>
       <input type="file" name="" id="myfile" />
     </label>
-    <button id="btn">点击导出文件</button>
+    <button id="btn">点击导出excel</button>
     <div id="demo"></div>
-    <script src="../node_modules/xlsx/dist/xlsx.core.min.js"></script>
-    <script>
-      var myfile = document.getElementById('myfile')
-      var btn = document.getElementById('btn')
-      var reader = new FileReader()
-      var data
-      myfile.addEventListener('change', upload)
-      btn.addEventListener('click', () => {
-        if (myfile.files.length === 0) {
-          alert('请先上传文件')
-          return
-        }
-        download(data, myfile.files[0].name)
-      })
-      function upload() {
-        console.log(reader,myfile.files[0].name)
-        reader.onload = function (e) {
-          data = e.target.result
-          var workbook = XLSX.read(data, { type: 'binary' })
-          console.log(console.log(XLSX.utils))
-          document.getElementById("demo").innerHTML = XLSX.utils.sheet_to_html(workbook.Sheets[workbook.SheetNames[0]])
-        }
-        reader.readAsBinaryString(myfile.files[0])
-      }
-      function download(content, filename) {
-        var a = document.createElement('a')
-        var blob = new Blob([content])
-        a.download = filename
-        a.href = URL.createObjectURL(blob)
-        a.click()
-        
-      }
-    </script>
+    <div id="table"></div>
+    <script src="./download-upload.js"></script>
+    <!-- <script src="./hansontable.js"></script> -->
+    <script src="./luckysheet.js"></script>
   </body>
 </html>
